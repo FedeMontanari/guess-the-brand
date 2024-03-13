@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="scroll-m-20 border-b pb-2 text-4xl font-semibold tracking-tight first:mt-0 mb-10 lg:text-5xl">
+      <h1 className="scroll-m-20 border-b pb-2 text-4xl font-semibold tracking-tight text-center mb-10 lg:text-5xl">
         Guess the brand name
       </h1>
       <div className="text-center flex flex-col items-center gap-5 h-96">

@@ -10,13 +10,13 @@ export default function RootLayout({
 }>) {
   return (
     <div className="min-h-screen flex items-center flex-col justify-center">
-      <div className="fixed top-5 flex flex-row items-center justify-center">
+      <div className="top-5 py-3 flex flex-row items-center justify-center md:fixed">
         <Button asChild variant="link">
           <Link href="/">&lt;&lt; Back</Link>
         </Button>
         <ModeToggle />
       </div>
-      {children}
+      <div>{children}</div>
     </div>
   );
 }
