@@ -9,11 +9,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 export default function SimpleIcon() {
   const [input, setInput] = useState<string>("");
   const [icon, setIcon] = useState<SimpleIcon>(getRandomIcon());
+  const [score, setScore] = useState<number>(0);
 
   function guessHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (input.toUpperCase() == icon.title.toUpperCase()) {
       alert("Correct!");
+      setScore(score + 1);
     } else {
       alert(`Incorrect. Answer was ${icon.title}`);
     }
@@ -52,6 +54,7 @@ export default function SimpleIcon() {
         />
         <Button type="submit">Guess</Button>
       </form>
+      <p className="text-xl">Score: {score.toString()}</p>
     </div>
   );
 }
