@@ -48,8 +48,17 @@ export default function Home() {
         </div>
         <div className="bg-primary-foreground p-4 rounded-md">
           <h4>
-            <Badge variant="outline">2</Badge> Try to get the highest score
-            possible!
+            <Badge variant="outline">2</Badge> Guess correctly and get a point.
+            <br />
+            Guess incorrectly and lose a life.
+            <br />
+            Lose 3 lives and game is over.
+          </h4>
+        </div>
+        <div className="bg-primary-foreground p-4 rounded-md">
+          <h4>
+            <Badge variant="outline">3</Badge> Get a high score and share it
+            with your friends!
           </h4>
         </div>
         <Button asChild>
