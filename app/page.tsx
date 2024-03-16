@@ -10,7 +10,7 @@ export default function Home() {
   const [gamemode, setGamemode] = useState<string>("multiple");
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
+    <main className="flex min-h-screen flex-col items-center justify-start mt-4 p-4 md:p-0">
       <h1 className="scroll-m-20 border-b pb-2 text-4xl font-semibold tracking-tight text-center mb-10 lg:text-5xl">
         Guess the brand name
       </h1>
