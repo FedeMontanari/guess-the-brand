@@ -25,8 +25,8 @@ export default function RootLayout({
           enableSystem={false}
         >
           {children}
+          <Analytics />
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );
