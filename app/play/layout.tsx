@@ -1,15 +1,14 @@
 import { ModeToggle } from "@/components/ModeToggle";
-import { Analytics } from "@vercel/analytics/react";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 
 import Link from "next/link";
 
-export default function RootLayout({
+export default function GameLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <div className="min-h-screen flex items-center flex-col justify-center pb-20">
       <div className="top-5 py-3 flex flex-row items-center justify-center md:fixed">
