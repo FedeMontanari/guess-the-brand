@@ -1,7 +1,6 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/react";
 
 import Link from "next/link";
 
@@ -26,7 +25,6 @@ export default function GameLayout({
         richColors
         duration={1000}
       />
-      <Analytics />
     </div>
   );
 }
