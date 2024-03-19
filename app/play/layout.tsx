@@ -11,7 +11,7 @@ export default function GameLayout({
 }) {
   return (
     <div className="min-h-screen flex items-center flex-col justify-center pb-20">
-      <div className="top-5 py-3 flex flex-row items-center justify-center md:fixed">
+      <div className="top-5 py-3 flex flex-row items-center justify-evenly w-full 2xl:fixed">
         <Button asChild variant="link">
           <Link href="/">&lt;&lt; Back</Link>
         </Button>
