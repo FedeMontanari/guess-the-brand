@@ -88,7 +88,7 @@ export default function BaseGame({
   return (
     <div className="flex flex-col items-center justify-center gap-4 bg-primary-foreground rounded-md py-5 px-7 w-fit">
       <AlertDialog open={open}>
-        <AlertDialogContent>
+        <AlertDialogContent className="w-3/4 rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>
               {score > highScore ? "New high score!" : "You lost"}

@@ -94,7 +94,7 @@ export default function TimedGame({
   return (
     <div className="flex flex-col items-center justify-center gap-4 bg-primary-foreground rounded-md py-5 px-7 w-fit">
       <AlertDialog open={open}>
-        <AlertDialogContent className="w-3/4 rounded-md md:w-fit">
+        <AlertDialogContent className="w-3/4 rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>
               {score > highScore ? "New high score!" : "You lost"}
@@ -121,7 +121,7 @@ export default function TimedGame({
         </AlertDialogContent>
       </AlertDialog>
       <AlertDialog open={gameStartAlert}>
-        <AlertDialogContent className="w-3/4 rounded-md md:w-fit">
+        <AlertDialogContent className="w-3/4 rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Start when ready</AlertDialogTitle>
             <AlertDialogDescription className="text-center">
