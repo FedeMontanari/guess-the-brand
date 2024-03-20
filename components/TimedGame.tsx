@@ -134,7 +134,8 @@ export default function TimedGame({
                 <Input
                   type="text"
                   placeholder="Your name here"
-                  maxLength={8}
+                  maxLength={10}
+                  minLength={3}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   disabled={uploaded}
