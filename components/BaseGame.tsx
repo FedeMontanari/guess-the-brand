@@ -18,7 +18,7 @@ import { toast } from "sonner";
 
 import { FormEvent, useEffect, useState } from "react";
 import { Heart } from "lucide-react";
-import { Input } from "./ui/input";
+import { Input } from "@/components/ui/input";
 
 export default function BaseGame({
   gameMode,
@@ -26,17 +26,18 @@ export default function BaseGame({
 }: {
   gameMode: "multiple" | "manual";
 }) {
+  // Initiating game states
   const [guess, setGuess] = useState<string>("");
-
   const [icon, setIcon] = useState<SimpleIcon>(getRandomIcon());
   const [score, setScore] = useState<number>(0);
   const [highScore, setHighScore] = useState<number>(0);
   const [lives, setLives] = useState<number>(3);
-
   const [open, setOpen] = useState<boolean>(false);
-
   const [options, setOptions] = useState<SimpleIcon[]>([]);
+  const [uploaded, setUploaded] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
 
+  // Handler function for user guess input
   function guessHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (guess.length <= 0 && gameMode == "multiple")
@@ -68,6 +69,25 @@ export default function BaseGame({
     resetHandler();
   }
 
+  // Handler function for leaderboard high score upload
+  function uploadScoreToLeaderboard() {
+    // Storing data on variable for JSON parsing
+    const postData = {
+      name: username,
+      score,
+      mode:
+        gameMode.charAt(0).toUpperCase() + gameMode.split("").slice(1).join(""),
+      variant: "Normal",
+    };
+
+    setUploaded(true);
+
+    fetch("/api/leaderboard", {
+      method: "POST",
+      body: JSON.stringify(postData),
+    });
+  }
+
   // Refresh the options array from the new icon trigger
   useEffect(() => {
     const arr = [getRandomIcon(), getRandomIcon(), getRandomIcon(), icon];
@@ -87,6 +107,7 @@ export default function BaseGame({
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 bg-primary-foreground rounded-md py-5 px-7 w-fit">
+      {/* Game finished dialog alert. Contains variable renders depending on score state */}
       <AlertDialog open={open}>
         <AlertDialogContent className="w-3/4 rounded-md">
           <AlertDialogHeader>
@@ -95,17 +116,36 @@ export default function BaseGame({
             </AlertDialogTitle>
             <AlertDialogDescription className="text-center">
               <p className="text-lg font-semibold">
-                Final score: {score.toString()}
+                Final score: {score.toString()} Highest score:{" "}
+                {highScore.toString()}
                 <br />
-                Highest score: {highScore.toString()}
+                {score > highScore
+                  ? "Do you wish to upload your score to the leaderboard?"
+                  : ""}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             {score > highScore ? (
-              <AlertDialogAction onClick={() => saveScoreHandler()}>
-                Play again
-              </AlertDialogAction>
+              <>
+                <Input
+                  type="text"
+                  placeholder="Your name here"
+                  maxLength={8}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  disabled={uploaded}
+                />
+                <AlertDialogAction
+                  disabled={uploaded}
+                  onClick={() => uploadScoreToLeaderboard()}
+                >
+                  Upload
+                </AlertDialogAction>
+                <AlertDialogAction onClick={() => saveScoreHandler()}>
+                  Play again
+                </AlertDialogAction>
+              </>
             ) : (
               <AlertDialogAction onClick={() => resetHandler()}>
                 Play Again
@@ -138,6 +178,7 @@ export default function BaseGame({
         <title>Brand icon</title>
         <path d={icon.path}></path>
       </svg>
+      {/* Main game section. Contains the user input for both games (manual and multiple choice) */}
       <form onSubmit={guessHandler} className="text-center">
         {gameMode == "multiple" ? (
           <>

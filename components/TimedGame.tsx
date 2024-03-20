@@ -27,19 +27,18 @@ export default function TimedGame({
   gameMode: "multiple" | "manual";
 }) {
   const [guess, setGuess] = useState<string>("");
-
   const [icon, setIcon] = useState<SimpleIcon>(getRandomIcon());
   const [score, setScore] = useState<number>(0);
   const [highScore, setHighScore] = useState<number>(0);
-
   const [open, setOpen] = useState<boolean>(false);
-  const [gameStartAlert, setGameStartAlert] = useState<boolean>(true);
+  const [options, setOptions] = useState<SimpleIcon[]>([]);
+  const [uploaded, setUploaded] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
   const [timeLeft, { start, pause, resume, reset }] = useCountDown(
     60 * 1000,
     55
   );
-
-  const [options, setOptions] = useState<SimpleIcon[]>([]);
+  const [gameStartAlert, setGameStartAlert] = useState<boolean>(true);
 
   function guessHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -72,6 +71,25 @@ export default function TimedGame({
     resetHandler();
   }
 
+  // Handler function for leaderboard high score upload
+  function uploadScoreToLeaderboard() {
+    // Storing data on variable for JSON parsing
+    const postData = {
+      name: username,
+      score,
+      mode:
+        gameMode.charAt(0).toUpperCase() + gameMode.split("").slice(1).join(""),
+      variant: "Timed",
+    };
+
+    setUploaded(true);
+
+    fetch("/api/leaderboard", {
+      method: "POST",
+      body: JSON.stringify(postData),
+    });
+  }
+
   // Refresh the options array from the new icon trigger
   useEffect(() => {
     const arr = [getRandomIcon(), getRandomIcon(), getRandomIcon(), icon];
@@ -101,17 +119,36 @@ export default function TimedGame({
             </AlertDialogTitle>
             <AlertDialogDescription className="text-center">
               <p className="text-lg font-semibold">
-                Final score: {score.toString()}
+                Final score: {score.toString()} Highest score:{" "}
+                {highScore.toString()}
                 <br />
-                Highest score: {highScore.toString()}
+                {score > highScore
+                  ? "Do you wish to upload your score to the leaderboard?"
+                  : ""}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             {score > highScore ? (
-              <AlertDialogAction onClick={() => saveScoreHandler()}>
-                Play again
-              </AlertDialogAction>
+              <>
+                <Input
+                  type="text"
+                  placeholder="Your name here"
+                  maxLength={8}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  disabled={uploaded}
+                />
+                <AlertDialogAction
+                  disabled={uploaded}
+                  onClick={() => uploadScoreToLeaderboard()}
+                >
+                  Upload
+                </AlertDialogAction>
+                <AlertDialogAction onClick={() => saveScoreHandler()}>
+                  Play again
+                </AlertDialogAction>
+              </>
             ) : (
               <AlertDialogAction onClick={() => resetHandler()}>
                 Play Again

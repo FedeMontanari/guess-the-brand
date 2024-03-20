@@ -3,44 +3,48 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Gamemode } from "@/types/GameTypes";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import LeaderboardTable from "@/components/LeaderboardTable";
 
-const gamemodes: {
-  name: string;
-  slug: string;
-  desc: string;
-  dif: string;
-  badgeColor: string;
-}[] = [
+const gamemodes: Gamemode[] = [
   {
     name: "Multiple Choice",
     slug: "multiple",
     desc: "Try to guess the name by selecting one of the options",
     dif: "Medium",
-    badgeColor: "orange-400",
+    badgeColor: "bg-orange-400",
   },
   {
     name: "Manual",
     slug: "manual",
     desc: "Try to guess the name by manually typing on the input field",
     dif: "Hard",
-    badgeColor: "red-600",
+    badgeColor: "bg-red-600",
   },
   {
     name: "Timed M/C",
     slug: "timed-multiple",
     desc: "Try to guess the name by selecting one of the options",
     dif: "Medium",
-    badgeColor: "orange-400",
+    badgeColor: "bg-orange-400",
   },
   {
     name: "Timed Manual",
     slug: "timed-manual",
     desc: "Try to guess the name by manually typing on the input field",
     dif: "Hard",
-    badgeColor: "red-600",
+    badgeColor: "bg-red-600",
   },
 ];
 
@@ -79,7 +83,7 @@ export default function Home() {
                 <TabsContent className="pt-6 md:pt-0" value={gm.slug} key={i}>
                   {gm.desc}
                   <br />
-                  <Badge className={`bg-${gm.badgeColor}`}>{gm.dif}</Badge>
+                  <Badge className={`${gm.badgeColor}`}>{gm.dif}</Badge>
                 </TabsContent>
               );
             })}
@@ -124,6 +128,20 @@ export default function Home() {
         </Button>
       </div>
       <section className="text-center mt-52 md:mt-32 2xl:absolute bottom-5">
+        <div>
+          <Badge className="bg-green-600">New!</Badge>
+          <Dialog>
+            <Button asChild variant="link" className="p-1">
+              <DialogTrigger>Leaderboard</DialogTrigger>
+            </Button>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Highest Scores</DialogTitle>
+                <LeaderboardTable />
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
         <p>
           Icons provided by{" "}
           <Button asChild variant="link" className="inline p-0">
