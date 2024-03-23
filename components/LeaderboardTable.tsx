@@ -18,7 +18,7 @@ export default function LeaderboardTable() {
   useEffect(() => {
     fetch("/api/leaderboard")
       .then((res) => res.json())
-      .then((data) => setTable(data));
+      .then((data) => setTable(data.slice(0, 10)));
   }, []);
 
   if (!table.length)

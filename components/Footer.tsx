@@ -1,9 +1,60 @@
-import React from 'react'
+import React from "react";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 
 export default function Footer() {
   return (
-    <div className='bg-primary-foreground h-11 flex flex-row items-center justify-center'>
-        <p>Created by Yaki</p>
-    </div>
-  )
+    <footer className="text-center">
+      <div className="bg-zinc-700 p-6 rounded-md text-start w-fit mx-4 md:mx-auto mb-4">
+        <span>Known issues:</span>
+        <ul className="list-disc">
+          <li>
+            Some white icons will blend with the background, making them hard to
+            identify
+          </li>
+          <li>
+            Sometimes the first icon will not line up with the options on the
+            Multiple Choice mode
+          </li>
+          <li>
+            Very rare occasions where you get repeated options on the Multiple
+            Choice mode.
+          </li>
+        </ul>
+      </div>
+      <div className="mb-4">
+        <p>
+          Icons from{" "}
+          <Button asChild variant="link" className="inline p-0 text-lg">
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://simpleicons.org/"
+            >
+              Simple Icons
+              <ExternalLink className="inline scale-75" />
+            </Link>
+          </Button>
+        </p>
+        <p className="italic">Licenses and use guidelines on their website.</p>
+      </div>
+      <p className="bg-primary-foreground rounded-md w-screen py-1">
+        Made by{" "}
+        <Button
+          asChild
+          variant="link"
+          className="p-0 inline text-lg font-semibold"
+        >
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://itsyaki.online"
+          >
+            Yaki
+          </Link>
+        </Button>
+      </p>
+    </footer>
+  );
 }

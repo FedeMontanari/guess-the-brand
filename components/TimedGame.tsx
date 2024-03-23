@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { FormEvent, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import useCountDown from "react-countdown-hook";
+import HighscoreForm from "./HighscoreForm";
 
 export default function TimedGame({
   gameMode,
@@ -32,8 +33,6 @@ export default function TimedGame({
   const [highScore, setHighScore] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
   const [options, setOptions] = useState<SimpleIcon[]>([]);
-  const [uploaded, setUploaded] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
   const [timeLeft, { start, pause, resume, reset }] = useCountDown(
     60 * 1000,
     55
@@ -51,7 +50,7 @@ export default function TimedGame({
       setScore(score + 1);
     } else {
       toast.error(`Incorrect. Answer was ${icon.title}`, {
-        duration: 5000,
+        duration: 2500,
         closeButton: true,
       });
     }
@@ -69,25 +68,6 @@ export default function TimedGame({
   function saveScoreHandler() {
     localStorage.setItem(`${gameMode}-timed`, score.toString());
     resetHandler();
-  }
-
-  // Handler function for leaderboard high score upload
-  function uploadScoreToLeaderboard() {
-    // Storing data on variable for JSON parsing
-    const postData = {
-      name: username,
-      score,
-      mode:
-        gameMode.charAt(0).toUpperCase() + gameMode.split("").slice(1).join(""),
-      variant: "Timed",
-    };
-
-    setUploaded(true);
-
-    fetch("/api/leaderboard", {
-      method: "POST",
-      body: JSON.stringify(postData),
-    });
   }
 
   // Refresh the options array from the new icon trigger
@@ -128,34 +108,26 @@ export default function TimedGame({
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            {score > highScore ? (
-              <>
-                <Input
-                  type="text"
-                  placeholder="Your name here"
-                  maxLength={10}
-                  minLength={3}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  disabled={uploaded}
-                />
-                <AlertDialogAction
-                  disabled={uploaded}
-                  onClick={() => uploadScoreToLeaderboard()}
-                >
-                  Upload
-                </AlertDialogAction>
-                <AlertDialogAction onClick={() => saveScoreHandler()}>
-                  Play again
-                </AlertDialogAction>
-              </>
-            ) : (
+          {score > highScore ? (
+            <AlertDialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
+              <HighscoreForm
+                score={score}
+                mode={
+                  gameMode.charAt(0).toUpperCase() +
+                  gameMode.split("").slice(1).join("")
+                }
+              />
+              <AlertDialogAction onClick={() => saveScoreHandler()}>
+                Play again
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          ) : (
+            <AlertDialogFooter>
               <AlertDialogAction onClick={() => resetHandler()}>
                 Play Again
               </AlertDialogAction>
-            )}
-          </AlertDialogFooter>
+            </AlertDialogFooter>
+          )}
         </AlertDialogContent>
       </AlertDialog>
       <AlertDialog open={gameStartAlert}>

@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { FormEvent, useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import HighscoreForm from "./HighscoreForm";
 
 export default function BaseGame({
   gameMode,
@@ -34,8 +35,6 @@ export default function BaseGame({
   const [lives, setLives] = useState<number>(3);
   const [open, setOpen] = useState<boolean>(false);
   const [options, setOptions] = useState<SimpleIcon[]>([]);
-  const [uploaded, setUploaded] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
 
   // Handler function for user guess input
   function guessHandler(e: FormEvent<HTMLFormElement>) {
@@ -49,7 +48,7 @@ export default function BaseGame({
       setScore(score + 1);
     } else {
       toast.error(`Incorrect. Answer was ${icon.title}`, {
-        duration: 5000,
+        duration: 2500,
         closeButton: true,
       });
       setLives(lives - 1);
@@ -67,25 +66,6 @@ export default function BaseGame({
   function saveScoreHandler() {
     localStorage.setItem(gameMode, score.toString());
     resetHandler();
-  }
-
-  // Handler function for leaderboard high score upload
-  function uploadScoreToLeaderboard() {
-    // Storing data on variable for JSON parsing
-    const postData = {
-      name: username,
-      score,
-      mode:
-        gameMode.charAt(0).toUpperCase() + gameMode.split("").slice(1).join(""),
-      variant: "Normal",
-    };
-
-    setUploaded(true);
-
-    fetch("/api/leaderboard", {
-      method: "POST",
-      body: JSON.stringify(postData),
-    });
   }
 
   // Refresh the options array from the new icon trigger
@@ -125,34 +105,26 @@ export default function BaseGame({
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            {score > highScore ? (
-              <>
-                <Input
-                  type="text"
-                  placeholder="Your name here"
-                  maxLength={10}
-                  minLength={3}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  disabled={uploaded}
-                />
-                <AlertDialogAction
-                  disabled={uploaded}
-                  onClick={() => uploadScoreToLeaderboard()}
-                >
-                  Upload
-                </AlertDialogAction>
-                <AlertDialogAction onClick={() => saveScoreHandler()}>
-                  Play again
-                </AlertDialogAction>
-              </>
-            ) : (
+          {score > highScore ? (
+            <AlertDialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
+              <HighscoreForm
+                score={score}
+                mode={
+                  gameMode.charAt(0).toUpperCase() +
+                  gameMode.split("").slice(1).join("")
+                }
+              />
+              <AlertDialogAction onClick={() => saveScoreHandler()}>
+                Play again
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          ) : (
+            <AlertDialogFooter>
               <AlertDialogAction onClick={() => resetHandler()}>
                 Play Again
               </AlertDialogAction>
-            )}
-          </AlertDialogFooter>
+            </AlertDialogFooter>
+          )}
         </AlertDialogContent>
       </AlertDialog>
       <div className="flex flex-row gap-2">

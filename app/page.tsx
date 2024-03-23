@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Footer from "@/components/Footer";
 import {
   Dialog,
   DialogContent,
@@ -12,10 +13,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { Gamemode } from "@/types/GameTypes";
-import { ExternalLink } from "lucide-react";
+import LeaderboardTable from "@/components/LeaderboardTable";
 import Link from "next/link";
 import { useState } from "react";
-import LeaderboardTable from "@/components/LeaderboardTable";
 
 const gamemodes: Gamemode[] = [
   {
@@ -52,11 +52,25 @@ export default function Home() {
   const [gamemode, setGamemode] = useState<string>("multiple");
 
   return (
-    <main className="flex flex-col items-center justify-start mt-4 p-4 md:p-0">
-      <h1 className="scroll-m-20 border-b pb-2 text-4xl font-semibold tracking-tight text-center mb-10 lg:text-5xl">
+    <main className="flex flex-col items-center mt-3 h-screen gap-5">
+      <h1 className="scroll-m-20 border-b pb-2 text-4xl font-semibold tracking-tight text-center mb-5 lg:text-5xl">
         Guess the brand name
       </h1>
-      <div className="text-center flex flex-col items-center gap-5 h-96">
+      <div className="text-center flex flex-col items-center gap-5 h-fit grow px-3">
+        <div>
+          <Badge className="bg-green-600">New!</Badge>
+          <Dialog>
+            <Button asChild variant="link" className="p-1">
+              <DialogTrigger>Leaderboard</DialogTrigger>
+            </Button>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Highest Scores</DialogTitle>
+                <LeaderboardTable />
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
         <h2 className="scroll-m-20 text-3xl font-medium tracking-tight">
           How to play:
         </h2>
@@ -127,50 +141,7 @@ export default function Home() {
           <Link href={`/play/${gamemode}`}>Start!</Link>
         </Button>
       </div>
-      <section className="text-center mt-52 md:mt-32 2xl:absolute bottom-5">
-        <div>
-          <Badge className="bg-green-600">New!</Badge>
-          <Dialog>
-            <Button asChild variant="link" className="p-1">
-              <DialogTrigger>Leaderboard</DialogTrigger>
-            </Button>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Highest Scores</DialogTitle>
-                <LeaderboardTable />
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        </div>
-        <p>
-          Icons provided by{" "}
-          <Button asChild variant="link" className="inline p-0">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://simpleicons.org/"
-            >
-              Simple Icons
-              <ExternalLink className="inline scale-75" />
-            </Link>
-          </Button>
-        </p>
-        <p>Licenses and use guidelines on their website.</p>
-        <br />
-        <p className="bg-primary-foreground rounded-md">
-          Made by{" "}
-          <Button asChild variant="link" className="p-0 inline">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://itsyaki.online"
-            >
-              Yaki
-              <ExternalLink className="inline scale-75" />
-            </Link>
-          </Button>
-        </p>
-      </section>
+      <Footer />
     </main>
   );
 }
