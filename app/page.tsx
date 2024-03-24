@@ -11,10 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { Gamemode } from "@/types/GameTypes";
 import LeaderboardTable from "@/components/LeaderboardTable";
+
 import Link from "next/link";
+import { Gamemode } from "@/types/GameTypes";
 import { useState } from "react";
 
 const gamemodes: Gamemode[] = [

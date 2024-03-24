@@ -8,7 +8,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CircleCheckBig, LoaderIcon } from "lucide-react";
+import { CircleCheckBig, LoaderIcon, Share2 } from "lucide-react";
+
+import "animate.css";
 
 const formSchema = z.object({
   username: z
@@ -23,12 +25,15 @@ const formSchema = z.object({
 export default function HighscoreForm({
   score,
   mode,
+  version,
 }: {
   score: number;
   mode: string;
+  version: string;
 }) {
   const [hidden, setHidden] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [share, setShare] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,6 +60,9 @@ export default function HighscoreForm({
       .then(() => {
         setHidden(true);
         setLoading(false);
+        setTimeout(() => {
+          setShare(true);
+        }, 2000);
       })
       .catch((er) => {
         toast.error("An error occurred, please try again!", {
@@ -64,15 +72,37 @@ export default function HighscoreForm({
       });
   }
 
+  function shareHandler() {
+    const message = `I got a score of ${score} in ${mode}(${version})!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
+
+    navigator.clipboard
+      .writeText(message)
+      .then(() => {
+        toast.success("Message copied to the clipboard!");
+      })
+      .catch(() => toast.error("An error occurred, try again!"));
+  }
+
   return (
     <>
       {hidden ? (
-        <div className="flex items-center justify-center">
-          <span className="text-green-500 font-semibold">
-            <CircleCheckBig className="inline" />
-            Submitted!
-          </span>
-        </div>
+        <>
+          {share ? (
+            <div className="flex items-center justify-center">
+              <Button onClick={() => shareHandler()}>
+                <Share2 className="pr-1" />
+                <span>Share</span>
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">
+              <span className="text-green-500 font-semibold animate__animated animate__fadeIn animate__fast">
+                <CircleCheckBig className="inline" />
+                Submitted!
+              </span>
+            </div>
+          )}
+        </>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-3">

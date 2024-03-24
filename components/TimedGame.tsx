@@ -116,6 +116,7 @@ export default function TimedGame({
                   gameMode.charAt(0).toUpperCase() +
                   gameMode.split("").slice(1).join("")
                 }
+                version="Timed"
               />
               <AlertDialogAction onClick={() => saveScoreHandler()}>
                 Play again

@@ -3,24 +3,34 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 
+const issues: { desc: string; fixed: boolean }[] = [
+  {
+    desc: "Some white icons will blend with the background, making them hard to identify.",
+    fixed: false,
+  },
+  {
+    desc: "Sometimes the first icon will not line up with the options on the Multiple Choice mode.",
+    fixed: false,
+  },
+  {
+    desc: "Very rare occasions where you get repeated options on the Multiple Choice mode.",
+    fixed: false,
+  },
+  {
+    desc: "Sometimes the color of the icon will not match exactly with the real one.",
+    fixed: false,
+  },
+];
+
 export default function Footer() {
   return (
     <footer className="text-center">
       <div className="bg-zinc-700 p-6 rounded-md text-start w-fit mx-4 md:mx-auto mb-4">
         <span>Known issues:</span>
         <ul className="list-disc">
-          <li>
-            Some white icons will blend with the background, making them hard to
-            identify
-          </li>
-          <li>
-            Sometimes the first icon will not line up with the options on the
-            Multiple Choice mode
-          </li>
-          <li>
-            Very rare occasions where you get repeated options on the Multiple
-            Choice mode.
-          </li>
+          {issues.map((v, i) => {
+            if (!v.fixed) return <li key={i}>{v.desc}</li>;
+          })}
         </ul>
       </div>
       <div className="mb-4">

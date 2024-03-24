@@ -113,6 +113,7 @@ export default function BaseGame({
                   gameMode.charAt(0).toUpperCase() +
                   gameMode.split("").slice(1).join("")
                 }
+                version="Normal"
               />
               <AlertDialogAction onClick={() => saveScoreHandler()}>
                 Play again
