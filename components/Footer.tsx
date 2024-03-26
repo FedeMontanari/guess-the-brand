@@ -1,7 +1,13 @@
 import React from "react";
 import { Button } from "./ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ChevronsUpDown, ExternalLink } from "lucide-react";
 
 const issues: { desc: string; fixed: boolean }[] = [
   {
@@ -25,14 +31,6 @@ const issues: { desc: string; fixed: boolean }[] = [
 export default function Footer() {
   return (
     <footer className="text-center">
-      <div className="bg-zinc-700 p-6 rounded-md text-start w-fit mx-4 md:mx-auto mb-4">
-        <span>Known issues:</span>
-        <ul className="list-disc">
-          {issues.map((v, i) => {
-            if (!v.fixed) return <li key={i}>{v.desc}</li>;
-          })}
-        </ul>
-      </div>
       <div className="mb-4">
         <p>
           Icons from{" "}
@@ -49,6 +47,30 @@ export default function Footer() {
         </p>
         <p className="italic">Licenses and use guidelines on their website.</p>
       </div>
+      <Collapsible className="bg-slate-700 p-3 rounded-md mx-4 md:mx-auto mb-4 md:w-1/3">
+        <div className="flex items-center justify-between space-x-4 px-4">
+          <h4 className="text-sm font-semibold">Some known issues</h4>
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" size="sm" className="w-9 p-0">
+              <ChevronsUpDown className="h-4 w-4" />
+              <span className="sr-only">Toggle</span>
+            </Button>
+          </CollapsibleTrigger>
+        </div>
+        <CollapsibleContent className="flex flex-col gap-2">
+          {issues.map((v, i) => {
+            if (!v.fixed)
+              return (
+                <p
+                  className="rounded-md border px-4 py-3 font-mono text-sm"
+                  key={i}
+                >
+                  - {v.desc}
+                </p>
+              );
+          })}
+        </CollapsibleContent>
+      </Collapsible>
       <p className="bg-primary-foreground rounded-md w-screen py-1">
         Made by{" "}
         <Button
