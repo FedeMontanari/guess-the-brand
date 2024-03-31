@@ -14,12 +14,20 @@ datasource db {
 }
 
 model HighScore {
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  score Int
-  mode  Gamemode
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  score   Int
+  mode    Gamemode
   variant Variant
-  date  DateTime @default(now())
+  date    DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [uuid])
+  userId  String
+}
+
+model User {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  uuid      String      @unique
+  highscore HighScore[]
 }
 
 enum Gamemode {

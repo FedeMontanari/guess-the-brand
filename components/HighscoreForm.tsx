@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { CircleCheckBig, LoaderIcon, Share2 } from "lucide-react";
 
@@ -34,6 +34,7 @@ export default function HighscoreForm({
   const [hidden, setHidden] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [share, setShare] = useState<boolean>(false);
+  const [id, setId] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,6 +83,10 @@ export default function HighscoreForm({
       })
       .catch(() => toast.error("An error occurred, try again!"));
   }
+
+  useEffect(() => {
+    setId(localStorage.getItem("id") || "");
+  }, []);
 
   return (
     <>

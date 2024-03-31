@@ -20,6 +20,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import HighscoreForm from "./HighscoreForm";
+import { randomUUID } from "crypto";
 
 export default function BaseGame({
   gameMode,
@@ -67,6 +68,11 @@ export default function BaseGame({
     localStorage.setItem(gameMode, score.toString());
     resetHandler();
   }
+
+  // Set the UUID for the device on initial load.
+  useEffect(() => {
+    localStorage.setItem("id", randomUUID());
+  }, []);
 
   // Refresh the options array from the new icon trigger
   useEffect(() => {
