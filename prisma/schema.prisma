@@ -20,14 +20,7 @@ model HighScore {
   mode    Gamemode
   variant Variant
   date    DateTime @default(now())
-  user    User     @relation(fields: [userId], references: [uuid])
-  userId  String
-}
-
-model User {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  uuid      String      @unique
-  highscore HighScore[]
+  uuid    String   @unique
 }
 
 enum Gamemode {
