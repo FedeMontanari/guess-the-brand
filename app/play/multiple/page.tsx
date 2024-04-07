@@ -3,5 +3,5 @@
 import BaseGame from "@/components/BaseGame";
 
 export default function Multiple() {
-  return <BaseGame gameMode="multiple" />;
+  return <BaseGame gameMode="Multiple" />;
 }

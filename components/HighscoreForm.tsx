@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { CircleCheckBig, LoaderIcon, Share2 } from "lucide-react";
 
 import "animate.css";
+import { Leaderboard } from "@/types/GameTypes";
+import { v4 as uuidv4 } from "uuid";
 
 const formSchema = z.object({
   username: z
@@ -25,16 +27,18 @@ const formSchema = z.object({
 export default function HighscoreForm({
   score,
   mode,
-  version,
+  variant,
 }: {
   score: number;
-  mode: string;
-  version: string;
+  mode: "Multiple" | "Manual";
+  variant: "Normal" | "Timed";
 }) {
   const [hidden, setHidden] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [share, setShare] = useState<boolean>(false);
-  const [id, setId] = useState<string>("");
+  const [uuid, setUuid] = useState<string>("");
+
+  const [prevScore, setPrevScore] = useState<Leaderboard>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,19 +48,23 @@ export default function HighscoreForm({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     const postData = {
       name: values.username,
       score,
       mode,
-      variant: "Normal",
+      variant,
+      uuid,
     };
+
+    if (!prevScore) {
+      setPrevScore(postData);
+    }
 
     setLoading(true);
 
     fetch("/api/leaderboard", {
       method: "POST",
-      body: JSON.stringify(postData),
+      body: JSON.stringify(prevScore),
     })
       .then(() => {
         setHidden(true);
@@ -74,7 +82,7 @@ export default function HighscoreForm({
   }
 
   function shareHandler() {
-    const message = `I got a score of ${score} in ${mode}(${version})!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
+    const message = `I got a score of ${score} in ${mode}(${variant})!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
 
     navigator.clipboard
       .writeText(message)
@@ -84,8 +92,30 @@ export default function HighscoreForm({
       .catch(() => toast.error("An error occurred, try again!"));
   }
 
+  // Set the UUID for the device on initial load and fetch the corresponding DB entry for said UUID.
   useEffect(() => {
-    setId(localStorage.getItem("id") || "");
+    let uuid = localStorage.getItem("uuid");
+    if (!uuid) {
+      localStorage.setItem("uuid", uuidv4());
+    }
+    //@ts-ignore
+    setUuid(localStorage.getItem("uuid"));
+
+    fetch(`/api/leaderboard?uuid=${uuid}`)
+      .then((res) => res.json())
+      .then((data: Leaderboard[]) => {
+        if (data.length <= 0) {
+          return;
+        } else {
+          const entry = data.find(
+            (v) => v.mode == mode && v.variant == variant
+          );
+          if (entry) {
+            setPrevScore(entry);
+          }
+        }
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (

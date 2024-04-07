@@ -24,11 +24,38 @@ export async function GET(req: NextApiRequest) {
 export async function POST(req: Request) {
   const data: Leaderboard = await req.json();
   try {
-    const newEntry = await prisma.highScore.create({
-      data,
+    const entry = await prisma.highScore.findFirst({
+      where: {
+        uuid: data.uuid,
+        mode: data.mode,
+        variant: data.variant,
+      },
     });
+
+    if (!entry) {
+      const newEntry = await prisma.highScore.create({
+        data,
+      });
+      return Response.json(
+        { message: "Entry created", newEntry },
+        {
+          status: 201,
+        }
+      );
+    }
+
+    const editedEntry = await prisma.highScore.update({
+      where: {
+        uuid: data.uuid,
+      },
+      data: data,
+    });
+
     return Response.json(
-      { message: "Entry created", newEntry },
+      {
+        message: "Entry edited correctly",
+        editedEntry,
+      },
       {
         status: 200,
       }

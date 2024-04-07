@@ -25,7 +25,7 @@ export default function TimedGame({
   gameMode,
   ...props
 }: {
-  gameMode: "multiple" | "manual";
+  gameMode: "Multiple" | "Manual";
 }) {
   const [guess, setGuess] = useState<string>("");
   const [icon, setIcon] = useState<SimpleIcon>(getRandomIcon());
@@ -41,9 +41,9 @@ export default function TimedGame({
 
   function guessHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (guess.length <= 0 && gameMode == "multiple")
+    if (guess.length <= 0 && gameMode == "Multiple")
       return toast.warning("Select an option first!");
-    if (guess.length <= 0 && gameMode == "manual")
+    if (guess.length <= 0 && gameMode == "Manual")
       return toast.warning("Type your guess first!");
     if (guess.toUpperCase() == icon.title.toUpperCase()) {
       toast.success("Correct!");
@@ -110,14 +110,7 @@ export default function TimedGame({
           </AlertDialogHeader>
           {score > highScore ? (
             <AlertDialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
-              <HighscoreForm
-                score={score}
-                mode={
-                  gameMode.charAt(0).toUpperCase() +
-                  gameMode.split("").slice(1).join("")
-                }
-                version="Timed"
-              />
+              <HighscoreForm score={score} mode={gameMode} variant="Timed" />
               <AlertDialogAction onClick={() => saveScoreHandler()}>
                 Play again
               </AlertDialogAction>
@@ -177,7 +170,7 @@ export default function TimedGame({
         <path d={icon.path}></path>
       </svg>
       <form onSubmit={guessHandler} className="text-center">
-        {gameMode == "multiple" ? (
+        {gameMode == "Multiple" ? (
           <>
             {options.length ? (
               <RadioGroup
@@ -202,7 +195,7 @@ export default function TimedGame({
         ) : (
           <></>
         )}
-        {gameMode == "manual" ? (
+        {gameMode == "Manual" ? (
           <Input
             type="text"
             placeholder="Your guess here"

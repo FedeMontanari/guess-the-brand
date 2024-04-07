@@ -20,13 +20,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import HighscoreForm from "./HighscoreForm";
-import { randomUUID } from "crypto";
 
 export default function BaseGame({
   gameMode,
   ...props
 }: {
-  gameMode: "multiple" | "manual";
+  gameMode: "Multiple" | "Manual";
 }) {
   // Initiating game states
   const [guess, setGuess] = useState<string>("");
@@ -40,13 +39,16 @@ export default function BaseGame({
   // Handler function for user guess input
   function guessHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (guess.length <= 0 && gameMode == "multiple")
+    // Empty guess conditionals
+    if (guess.length <= 0 && gameMode == "Multiple")
       return toast.warning("Select an option first!");
-    if (guess.length <= 0 && gameMode == "manual")
+    if (guess.length <= 0 && gameMode == "Manual")
       return toast.warning("Type your guess first!");
+    // Correct answer
     if (guess.toUpperCase() == icon.title.toUpperCase()) {
       toast.success("Correct!");
       setScore(score + 1);
+      // Incorrect answer
     } else {
       toast.error(`Incorrect. Answer was ${icon.title}`, {
         duration: 2500,
@@ -68,11 +70,6 @@ export default function BaseGame({
     localStorage.setItem(gameMode, score.toString());
     resetHandler();
   }
-
-  // Set the UUID for the device on initial load.
-  useEffect(() => {
-    localStorage.setItem("id", randomUUID());
-  }, []);
 
   // Refresh the options array from the new icon trigger
   useEffect(() => {
@@ -115,11 +112,8 @@ export default function BaseGame({
             <AlertDialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
               <HighscoreForm
                 score={score}
-                mode={
-                  gameMode.charAt(0).toUpperCase() +
-                  gameMode.split("").slice(1).join("")
-                }
-                version="Normal"
+                mode={gameMode}
+                variant="Normal"
               />
               <AlertDialogAction onClick={() => saveScoreHandler()}>
                 Play again
@@ -134,6 +128,7 @@ export default function BaseGame({
           )}
         </AlertDialogContent>
       </AlertDialog>
+      {/* Life hearts display */}
       <div className="flex flex-row gap-2">
         Lives:
         {Array.from({ length: lives }, () => "value").map((v, i) => {
@@ -160,7 +155,7 @@ export default function BaseGame({
       </svg>
       {/* Main game section. Contains the user input for both games (manual and multiple choice) */}
       <form onSubmit={guessHandler} className="text-center">
-        {gameMode == "multiple" ? (
+        {gameMode == "Multiple" ? (
           <>
             {options.length ? (
               <RadioGroup
@@ -185,7 +180,7 @@ export default function BaseGame({
         ) : (
           <></>
         )}
-        {gameMode == "manual" ? (
+        {gameMode == "Manual" ? (
           <Input
             type="text"
             placeholder="Your guess here"
@@ -200,6 +195,11 @@ export default function BaseGame({
           Guess
         </Button>
       </form>
+      <HighscoreForm
+        score={score}
+        mode={gameMode}
+        variant="Normal"
+      />
     </div>
   );
 }

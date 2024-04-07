@@ -11,6 +11,6 @@ export type Leaderboard = {
   score: number;
   mode: "Multiple" | "Manual";
   variant: "Normal" | "Timed";
-  date: string;
+  date?: Date;
   uuid: string;
 };

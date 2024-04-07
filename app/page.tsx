@@ -16,6 +16,7 @@ import LeaderboardTable from "@/components/LeaderboardTable";
 import Link from "next/link";
 import { Gamemode } from "@/types/GameTypes";
 import { useState } from "react";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const gamemodes: Gamemode[] = [
   {
@@ -57,12 +58,13 @@ export default function Home() {
         Guess the brand name
       </h1>
       <div className="text-center flex flex-col items-center gap-5 h-fit grow px-3">
-        <div>
+        <div className="flex flex-row items-center justify-center">
           <Badge className="bg-green-600">New!</Badge>
           <Dialog>
-            <Button asChild variant="link" className="p-1">
+            <Button asChild variant="link" className="p-1 pr-3">
               <DialogTrigger>Leaderboard</DialogTrigger>
             </Button>
+            <ModeToggle />
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Highest Scores</DialogTitle>
