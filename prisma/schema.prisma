@@ -20,7 +20,6 @@ model HighScore {
   mode    Gamemode
   variant Variant
   date    DateTime @default(now())
-  uuid    String   @unique
 }
 
 enum Gamemode {

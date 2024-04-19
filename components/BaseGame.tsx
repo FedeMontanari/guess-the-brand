@@ -195,11 +195,6 @@ export default function BaseGame({
           Guess
         </Button>
       </form>
-      <HighscoreForm
-        score={score}
-        mode={gameMode}
-        variant="Normal"
-      />
     </div>
   );
 }

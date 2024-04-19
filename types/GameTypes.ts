@@ -12,5 +12,4 @@ export type Leaderboard = {
   mode: "Multiple" | "Manual";
   variant: "Normal" | "Timed";
   date?: Date;
-  uuid: string;
 };

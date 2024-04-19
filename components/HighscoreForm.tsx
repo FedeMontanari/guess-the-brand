@@ -12,7 +12,6 @@ import { CircleCheckBig, LoaderIcon, Share2 } from "lucide-react";
 
 import "animate.css";
 import { Leaderboard } from "@/types/GameTypes";
-import { v4 as uuidv4 } from "uuid";
 
 const formSchema = z.object({
   username: z
@@ -36,7 +35,6 @@ export default function HighscoreForm({
   const [hidden, setHidden] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [share, setShare] = useState<boolean>(false);
-  const [uuid, setUuid] = useState<string>("");
 
   const [prevScore, setPrevScore] = useState<Leaderboard>();
 
@@ -53,7 +51,6 @@ export default function HighscoreForm({
       score,
       mode,
       variant,
-      uuid,
     };
 
     if (!prevScore) {
@@ -94,14 +91,7 @@ export default function HighscoreForm({
 
   // Set the UUID for the device on initial load and fetch the corresponding DB entry for said UUID.
   useEffect(() => {
-    let uuid = localStorage.getItem("uuid");
-    if (!uuid) {
-      localStorage.setItem("uuid", uuidv4());
-    }
-    //@ts-ignore
-    setUuid(localStorage.getItem("uuid"));
-
-    fetch(`/api/leaderboard?uuid=${uuid}`)
+    fetch(`/api/leaderboard`)
       .then((res) => res.json())
       .then((data: Leaderboard[]) => {
         if (data.length <= 0) {
