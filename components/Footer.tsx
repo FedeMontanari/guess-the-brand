@@ -31,7 +31,7 @@ const issues: { desc: string; fixed: boolean }[] = [
 export default function Footer() {
   return (
     <footer className="text-center">
-      <div className="bg-zinc-700 p-6 rounded-md w-3/4 mx-auto mb-4">
+      <div className="bg-zinc-700 rounded-md w-3/4 md:w-1/3 mx-auto mb-4">
         <Accordion type="single" collapsible>
           <AccordionItem value="issues">
             <AccordionTrigger>Known Issues</AccordionTrigger>
@@ -40,7 +40,7 @@ export default function Footer() {
                 {issues.map((v, i) => {
                   if (!v.fixed)
                     return (
-                      <li key={i} className="pb-3 last:pb-0">
+                      <li key={i} className="pb-3 last:pb-3">
                         - {v.desc}
                       </li>
                     );
