@@ -20,6 +20,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import useCountDown from "react-countdown-hook";
 import HighscoreForm from "./HighscoreForm";
+import { Share2 } from "lucide-react";
 
 export default function TimedGame({
   gameMode,
@@ -70,6 +71,17 @@ export default function TimedGame({
     resetHandler();
   }
 
+  function shareHandler() {
+    const message = `I got a score of ${score} in ${gameMode}(Timed)!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
+
+    navigator.clipboard
+      .writeText(message)
+      .then(() => {
+        toast.success("Message copied to the clipboard!");
+      })
+      .catch(() => toast.error("An error occurred, try again!"));
+  }
+
   // Refresh the options array from the new icon trigger
   useEffect(() => {
     const arr = [getRandomIcon(), getRandomIcon(), getRandomIcon(), icon];
@@ -102,21 +114,34 @@ export default function TimedGame({
                 Final score: {score.toString()} Highest score:{" "}
                 {highScore.toString()}
                 <br />
-                {score > highScore
+                {/* {score > highScore
                   ? "Do you wish to upload your score to the leaderboard?"
-                  : ""}
+                  : ""} */}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           {score > highScore ? (
             <AlertDialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
-              <HighscoreForm score={score} mode={gameMode} variant="Timed" />
+              {/* <HighscoreForm score={score} mode={gameMode} variant="Timed" /> */}
+
+              <div className="flex items-center justify-center">
+                <Button onClick={() => shareHandler()}>
+                  <Share2 className="pr-1" />
+                  <span>Share</span>
+                </Button>
+              </div>
               <AlertDialogAction onClick={() => saveScoreHandler()}>
                 Play again
               </AlertDialogAction>
             </AlertDialogFooter>
           ) : (
             <AlertDialogFooter>
+              <div className="flex items-center justify-center">
+                <Button onClick={() => shareHandler()}>
+                  <Share2 className="pr-1" />
+                  <span>Share</span>
+                </Button>
+              </div>
               <AlertDialogAction onClick={() => resetHandler()}>
                 Play Again
               </AlertDialogAction>

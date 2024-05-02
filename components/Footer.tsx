@@ -1,7 +1,13 @@
-import React from "react";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+
+import { Button } from "./ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const issues: { desc: string; fixed: boolean }[] = [
   {
@@ -25,13 +31,24 @@ const issues: { desc: string; fixed: boolean }[] = [
 export default function Footer() {
   return (
     <footer className="text-center">
-      <div className="bg-zinc-700 p-6 rounded-md text-start w-fit mx-4 md:mx-auto mb-4">
-        <span>Known issues:</span>
-        <ul className="list-disc">
-          {issues.map((v, i) => {
-            if (!v.fixed) return <li key={i}>{v.desc}</li>;
-          })}
-        </ul>
+      <div className="bg-zinc-700 p-6 rounded-md w-3/4 mx-auto mb-4">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="issues">
+            <AccordionTrigger>Known Issues</AccordionTrigger>
+            <AccordionContent>
+              <ul>
+                {issues.map((v, i) => {
+                  if (!v.fixed)
+                    return (
+                      <li key={i} className="pb-3 last:pb-0">
+                        - {v.desc}
+                      </li>
+                    );
+                })}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
       <div className="mb-4">
         <p>

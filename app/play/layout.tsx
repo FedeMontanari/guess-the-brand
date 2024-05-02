@@ -24,7 +24,7 @@ export default function GameLayout({
         <Button asChild variant="link">
           <Link href="/">&lt;&lt; Back</Link>
         </Button>
-        <div>
+        {/* <div>
           <Badge className="bg-green-600">New!</Badge>
           <Dialog>
             <Button asChild variant="link" className="p-1">
@@ -37,7 +37,7 @@ export default function GameLayout({
               </DialogHeader>
             </DialogContent>
           </Dialog>
-        </div>
+        </div> */}
         <ModeToggle />
       </div>
       <div>{children}</div>
