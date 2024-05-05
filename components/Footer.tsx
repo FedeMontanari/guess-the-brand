@@ -44,6 +44,7 @@ export default function Footer() {
                         - {v.desc}
                       </li>
                     );
+                  return;
                 })}
               </ul>
             </AccordionContent>
@@ -66,7 +67,7 @@ export default function Footer() {
         </p>
         <p className="italic">Licenses and use guidelines on their website.</p>
       </div>
-      <p className="bg-primary-foreground rounded-md w-screen py-1">
+      {/* <p className="bg-primary-foreground rounded-md w-screen py-1">
         Made by{" "}
         <Button
           asChild
@@ -81,7 +82,7 @@ export default function Footer() {
             Yaki
           </Link>
         </Button>
-      </p>
+      </p> */}
     </footer>
   );
 }
