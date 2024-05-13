@@ -32,7 +32,7 @@ export default function Footer() {
   return (
     <footer className="text-center">
       <div className="bg-zinc-700 rounded-md w-3/4 md:w-1/3 mx-auto mb-4">
-        <Accordion type="single" collapsible>
+        <Accordion type="single" collapsible className="px-5">
           <AccordionItem value="issues">
             <AccordionTrigger>Known Issues</AccordionTrigger>
             <AccordionContent>
@@ -65,9 +65,9 @@ export default function Footer() {
             </Link>
           </Button>
         </p>
-        <p className="italic">Licenses and use guidelines on their website.</p>
+        <p className="italic text-xs text-muted-foreground">Licenses and use guidelines on their website.</p>
       </div>
-      {/* <p className="bg-primary-foreground rounded-md w-screen py-1">
+      <p className="bg-primary-foreground rounded-md w-screen py-1">
         Made by{" "}
         <Button
           asChild
@@ -82,7 +82,7 @@ export default function Footer() {
             Yaki
           </Link>
         </Button>
-      </p> */}
+      </p>
     </footer>
   );
 }
