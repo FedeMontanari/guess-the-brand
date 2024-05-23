@@ -39,7 +39,7 @@ export default function BaseGame({
   // Handler function for user guess input
   function guessHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Empty guess conditionals
+    // Empty guess toasts
     if (guess.length <= 0 && gameMode == "Multiple")
       return toast.warning("Select an option first!");
     if (guess.length <= 0 && gameMode == "Manual")
@@ -72,7 +72,9 @@ export default function BaseGame({
   }
 
   function shareHandler() {
-    const message = `I got a score of ${score} in ${gameMode}(Normal)!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
+    const message = `I got a score of ${score} in Normal ${
+      gameMode == "Multiple" ? "Multiple Choice" : "Manual"
+    } mode!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
 
     navigator.clipboard
       .writeText(message)
@@ -113,42 +115,42 @@ export default function BaseGame({
                 Final score: {score.toString()} Highest score:{" "}
                 {highScore.toString()}
                 <br />
-                {/* {score > highScore
-                  ? "Do you wish to upload your score to the leaderboard?"
-                  : ""} */}
+                {score > highScore ? (
+                  <span className="font-normal text-base">
+                    Upload score to the leaderboard?
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
-          {score > highScore ? (
-            <AlertDialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
-              {/* <HighscoreForm
-                score={score}
-                mode={gameMode}
-                variant="Normal"
-              /> */}
-              <div className="flex items-center justify-center">
-                <Button onClick={() => shareHandler()}>
-                  <Share2 className="pr-1" />
-                  <span>Share</span>
-                </Button>
+          <AlertDialogFooter className="flex flex-row justify-center">
+            {score > highScore ? (
+              <div className="flex flex-col space-y-3 w-full">
+                <HighscoreForm score={score} mode={gameMode} variant="Normal" />
+                <div className="flex items-center justify-evenly">
+                  <Button onClick={() => shareHandler()}>
+                    Share
+                    <Share2 className="pl-1" />
+                  </Button>
+                  <AlertDialogAction onClick={() => saveScoreHandler()}>
+                    Play again
+                  </AlertDialogAction>
+                </div>
               </div>
-              <AlertDialogAction onClick={() => saveScoreHandler()}>
-                Play again
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          ) : (
-            <AlertDialogFooter>
-              <div className="flex items-center justify-center">
+            ) : (
+              <div className="flex items-center justify-evenly w-full">
                 <Button onClick={() => shareHandler()}>
-                  <Share2 className="pr-1" />
-                  <span>Share</span>
+                  Share
+                  <Share2 className="pl-1" />
                 </Button>
+                <AlertDialogAction onClick={() => resetHandler()}>
+                  Play Again
+                </AlertDialogAction>
               </div>
-              <AlertDialogAction onClick={() => resetHandler()}>
-                Play Again
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          )}
+            )}
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       {/* Life hearts display */}

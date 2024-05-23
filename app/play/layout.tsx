@@ -1,5 +1,4 @@
 import LeaderboardTable from "@/components/LeaderboardTable";
-import { ModeToggle } from "@/components/ModeToggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +23,7 @@ export default function GameLayout({
         <Button asChild variant="link">
           <Link href="/">&lt;&lt; Back</Link>
         </Button>
-        {/* <div>
+        <div>
           <Badge className="bg-green-600">New!</Badge>
           <Dialog>
             <Button asChild variant="link" className="p-1">
@@ -37,8 +36,7 @@ export default function GameLayout({
               </DialogHeader>
             </DialogContent>
           </Dialog>
-        </div> */}
-        <ModeToggle />
+        </div>
       </div>
       <div>{children}</div>
       <Toaster

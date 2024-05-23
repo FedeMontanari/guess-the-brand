@@ -6,12 +6,12 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { CircleCheckBig, LoaderIcon, Share2 } from "lucide-react";
+import { profanity } from "@2toad/profanity";
 
 import "animate.css";
-import { Leaderboard } from "@/types/GameTypes";
 
 const formSchema = z.object({
   username: z
@@ -34,9 +34,6 @@ export default function HighscoreForm({
 }) {
   const [hidden, setHidden] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [share, setShare] = useState<boolean>(false);
-
-  const [prevScore, setPrevScore] = useState<Leaderboard>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,22 +50,19 @@ export default function HighscoreForm({
       variant,
     };
 
-    if (!prevScore) {
-      setPrevScore(postData);
+    if (profanity.exists(postData.name)) {
+      return toast.error("Please, do not use profane words");
     }
 
     setLoading(true);
 
     fetch("/api/leaderboard", {
       method: "POST",
-      body: JSON.stringify(prevScore),
+      body: JSON.stringify(postData),
     })
       .then(() => {
         setHidden(true);
         setLoading(false);
-        setTimeout(() => {
-          setShare(true);
-        }, 2000);
       })
       .catch((er) => {
         toast.error("An error occurred, please try again!", {
@@ -78,56 +72,34 @@ export default function HighscoreForm({
       });
   }
 
-  function shareHandler() {
-    const message = `I got a score of ${score} in ${mode}(${variant})!\nTry and do better than me!\nhttps://guessthebrand.vercel.app/`;
-
-    navigator.clipboard
-      .writeText(message)
-      .then(() => {
-        toast.success("Message copied to the clipboard!");
-      })
-      .catch(() => toast.error("An error occurred, try again!"));
-  }
-
   // Set the UUID for the device on initial load and fetch the corresponding DB entry for said UUID.
-  useEffect(() => {
-    fetch(`/api/leaderboard`)
-      .then((res) => res.json())
-      .then((data: Leaderboard[]) => {
-        if (data.length <= 0) {
-          return;
-        } else {
-          const entry = data.find(
-            (v) => v.mode == mode && v.variant == variant
-          );
-          if (entry) {
-            setPrevScore(entry);
-          }
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/leaderboard`)
+  //     .then((res) => res.json())
+  //     .then((data: Leaderboard[]) => {
+  //       if (data.length <= 0) {
+  //         return;
+  //       } else {
+  //         const entry = data.find(
+  //           (v) => v.mode == mode && v.variant == variant
+  //         );
+  //         if (entry) {
+  //           setPrevScore(entry);
+  //         }
+  //       }
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   return (
     <>
       {hidden ? (
-        <>
-          {share ? (
-            <div className="flex items-center justify-center">
-              <Button onClick={() => shareHandler()}>
-                <Share2 className="pr-1" />
-                <span>Share</span>
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center">
-              <span className="text-green-500 font-semibold animate__animated animate__fadeIn animate__fast">
-                <CircleCheckBig className="inline" />
-                Submitted!
-              </span>
-            </div>
-          )}
-        </>
+        <div className="flex items-center justify-center">
+          <span className="text-green-500 font-semibold animate__animated animate__fadeIn animate__fast">
+            <CircleCheckBig className="inline" />
+            Submitted!
+          </span>
+        </div>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-3">
