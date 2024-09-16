@@ -65,7 +65,9 @@ export default function Footer() {
             </Link>
           </Button>
         </p>
-        <p className="italic text-xs text-muted-foreground">Licenses and use guidelines on their website.</p>
+        <p className="italic text-xs text-muted-foreground">
+          Licenses and use guidelines on their website.
+        </p>
       </div>
       <p className="bg-primary-foreground rounded-md w-screen py-1">
         Made by{" "}
@@ -77,7 +79,7 @@ export default function Footer() {
           <Link
             target="_blank"
             rel="noopener noreferrer"
-            href="https://itsyaki.online"
+            href="https://itsyaki.dev"
           >
             Yaki
           </Link>
