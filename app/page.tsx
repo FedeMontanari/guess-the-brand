@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import LeaderboardTable from "@/components/LeaderboardTable";
+// import LeaderboardTable from "@/components/LeaderboardTable";
 
 import Link from "next/link";
 import { Gamemode } from "@/types/GameTypes";
@@ -57,7 +57,7 @@ export default function Home() {
         Guess the brand name
       </h1>
       <div className="text-center flex flex-col items-center gap-5 h-fit grow px-3">
-        <div className="flex flex-row items-center justify-center">
+        {/* <div className="flex flex-row items-center justify-center">
           <Badge className="bg-green-600">New!</Badge>
           <Dialog>
             <Button asChild variant="link" className="p-1 pr-3">
@@ -70,7 +70,7 @@ export default function Home() {
               </DialogHeader>
             </DialogContent>
           </Dialog>
-        </div>
+        </div> */}
         <h2 className="scroll-m-20 text-3xl font-medium tracking-tight">
           How to play:
         </h2>
